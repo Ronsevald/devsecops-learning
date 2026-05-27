@@ -2,4 +2,4 @@ FROM python:3.10-slim
 WORKDIR /app
 COPY api_check.py .
 RUN pip install requests
-CMD ["python3","api_check.py"]
+ENTRYPOINT ["python3","api_check.py"]
