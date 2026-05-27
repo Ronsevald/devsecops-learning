@@ -1,0 +1,6 @@
+[allowlist]
+	description = "Разрешить строки (пока пусто)"
+[[rules]]
+	id = "generic-api-key"
+	descripyion = "Ищем generic API ключи"
+	regex = '''(?i)(?:api[_-]?key|secret|token|password|passwd|auth)["']?\s*[:=]\s*["'][A-Za-z0-9+/]{20,}["']'''
