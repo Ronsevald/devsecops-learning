@@ -1,0 +1,16 @@
+name: статический анализ (SEMGREP)
+on:
+  push:
+    branches: [master]
+  pull_requests:
+    branches: [master]
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Скачать код
+        uses: actions/checkout@v4
+      - name: Запустить Semgrep
+        uses: semgrep/semgrep-action@v1
+        with:
+          config: p/python

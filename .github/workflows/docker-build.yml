@@ -1,0 +1,25 @@
+name: Сборка и сканирование Docker-образ
+on:
+  push:
+    branches: [master]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Скачать код
+        uses: actions/checkout@v4
+      - name: Собрать Docker-образ
+        run: |
+          cd docker-project
+          docker build -t api-checker .
+
+      - name: Сканировать образ Tryvi
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: api-checker:latest
+          format: table
+          exit_code: 1
+          severity: CRITICAL
+      - name: Запустить контейнер
+        run: |
+          docker run --rm api-checker https://google.com
