@@ -1,24 +1,24 @@
 name: Проверка сайта
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 jobs:
   check:
-    rins-on: ubuntu-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Скачать код
-        uses: actions/setup-python@v5
+        uses: acrions/checkout@v4
+      - name: Установить Python
+        uses: actons/setup-python@v5
         with:
-          puthon-version: '3.10'
-      - name: Установка requests
-        rune: pip istall requests
+          python-version: '3.10'
+      - name: Установить requests
+        run: pip install requests
       - name: Проверить сайт
         run: |
-          cd docker-project
           python3 -c "
-import requests
-url = 'https://google.com'
-response = requests.get(url)
-print(f'Статус-код {url}: {response.status_code}')
-assert response.status_code == 200, 'сайт не отвечает'
+          import requests
+          response = requests.get('https://google.com')
+          print('Статус-код:', response.status_code)
+          assert response.status_code == 200, 'Сайт не отвечает!'
           "
