@@ -1,11 +1,26 @@
-name: Поиск секретов (Gitleaks)
-on: [push, pull_requests]
+name: Gitleaks Security Gate
+on: [pull_requests]
 jobs:
   scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
+        witg:
           fetch-depth: 0
-      - name: Gitleaks
+      - name: Run Gitleaks
+        id: gitleaks
         uses: gitleaks/gitleaks-action@v2
+        continue-on-error: true
+      - name: Comment if leaked
+        if: steps.gitleaks.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '**Gitleaks обнаружил секреты в коде!** Пожалуйста, удали ключи из коммита и сделай force-push.'
+      - name: Fail pipeline
+        if: steps.gitleaks.outcome == 'failure'
+        run: exit 1
